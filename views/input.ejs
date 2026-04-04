@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archery Scores | <%= title  %></title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="/"><h1>Archery Score Sheet</h1></a>
+    <p>Sort through and input scores</p>
+
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/scores">Scores</a></li>
+            <li><a href="/score-input">Input a score</a></li>
+        </ul>
+    </nav>
+
+    <div class="home content">
+        <form action="/scores" method="post">
+            <label for="archer">Archer:</label>
+            <input type="text" id="archer" name="archer" required>
+            <label for="score">Score:</label>
+            <input type="number" id="score" name="score" required>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+            <button type="submit" id="submit">Submit</button>
+        </form>
+    </div>
+    <footer>
+        <p>
+            Copyright &copy; Isaac Young
+        </p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

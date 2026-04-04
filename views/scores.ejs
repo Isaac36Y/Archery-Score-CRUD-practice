@@ -20,6 +20,14 @@
 
     <div class="scores content">
         <h2>All Scores</h2>
+        <label for="sort-by">Sort By: </label>
+        <select name="sort-by" id="sort-by" >
+            <option value="" disabled selected hidden>Select an option...</option>
+            <option value="score-high-to-low">Score - Highest to Lowest</option>
+            <option value="score-low-to-high">Score - Lowest to Highest</option>
+            <option value="date-new-to-old">Date - Newest to Oldest</option>
+            <option value="date-old-to-new">Date - Oldest to Newest</option>
+        </select>
         <div class="scores-container">
             <% scores.forEach(score => { %>
                 <div class="score-row" id="<%= score.id %>">

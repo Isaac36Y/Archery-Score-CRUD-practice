@@ -22,9 +22,23 @@ app.get('/', (req, res) => {
 })
 
 app.get('/scores', async (req, res) => {
-    const { data: scores, error } = await supabase.from('Score tracker').select('*').order('id', { ascending: true })
+    if (req.query.order === 'score-desc') {
+        const { data: scores, error } = await supabase.from('Score tracker').select('*').order('score', { ascending: false})
+        res.render('scores', { scores, title: 'Scores ', order: req.query.order || 'default'})
+    }else if (req.query.order === 'score-asc') {
+        const { data: scores, error } = await supabase.from('Score tracker').select('*').order('score', { ascending: true})
+        res.render('scores', { scores, title: 'Scores ', order: req.query.order || 'default'})
+    }else if (req.query.order === 'date-desc') {
+        const { data: scores, error } = await supabase.from('Score tracker').select('*').order('date', { ascending: false})
+        res.render('scores', { scores, title: 'Scores ', order: req.query.order || 'default'})
+    }else if (req.query.order === 'date-asc') {
+        const { data: scores, error } = await supabase.from('Score tracker').select('*').order('date', { ascending: true})
+        res.render('scores', { scores, title: 'Scores ', order: req.query.order || 'default'})
+    }else {
+        const { data: scores, error } = await supabase.from('Score tracker').select('*').order('id', { ascending: true })
+        res.render('scores', { scores, title: 'Scores', order: req.query.order || 'default'})
+    }
     
-    res.render('scores', { scores, title: 'Scores' })
 })
 
 app.get('/score-input', (req, res) => {

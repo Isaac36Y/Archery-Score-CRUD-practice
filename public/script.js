@@ -36,6 +36,11 @@ scores.addEventListener('click', (e) => {
             body: JSON.stringify({ archer: archer.value, score: +score.value, date: date.value })
         }).then(() => window.location.reload())
     }
-    
+})
 
+const filter = document.querySelector('#sort-by');
+
+filter.addEventListener('change', () => {
+    const option = filter.value
+    window.location.assign(`/scores?order=${option}`)
 })

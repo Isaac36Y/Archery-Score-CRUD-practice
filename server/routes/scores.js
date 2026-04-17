@@ -31,6 +31,23 @@ app.get('/scores', requireAuth, async (req, res) => {
     
 })
 
+app.post('/scores/:id/delete', async (req, res) => {
+    const id = parseInt(req.params.id)
+    const userSupabase = getUserSupaBase(req.cookies.access_token)
+    const { error } = await userSupabase.from('Score tracker').delete().eq('id', id)
+
+    res.redirect('/scores')
+})
+
+app.post('/scores/:id/edit', async (req, res) => {
+    const id = parseInt(req.params.id)
+    const userSupabase = getUserSupaBase(req.cookies.access_token)
+    const { error } = await userSupabase.from('Score tracker').update(req.body).eq('id', id)
+
+    res.status(200).json({ message: 'success'})
+})
+
+// score input
 app.get('/score-input', requireAuth, (req, res) => {
     res.render('input', { title: 'Input' })
 
@@ -47,17 +64,4 @@ app.post('/score-input', async (req, res) => {
 })
 
 
-app.post('/scores/:id/delete', async (req, res) => {
-    const id = parseInt(req.params.id)
-    const { error } = await supabase.from('Score tracker').delete().eq('id', id)
 
-
-    res.redirect('/scores')
-})
-
-app.post('/scores/:id/edit', async (req, res) => {
-    const id = parseInt(req.params.id)
-    const { error } = await supabase.from('Score tracker').update(req.body).eq('id', id)
-   
-    res.status(200).json({ message: 'success'})
-})

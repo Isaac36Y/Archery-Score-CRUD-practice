@@ -1,71 +1,21 @@
-require('dotenv').config();
-const express = require('express');
-const { createClient } = require('@supabase/supabase-js')
+import 'dotenv/config';
+import express from 'express'
+import { createClient } from '@supabase/supabase-js'
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+export const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 const app = express()
 
 
 
-app.set('view engine', 'ejs')
-app.listen(3000, () => {
-    console.log('server running on port 3000')
-})
+app.set('view engine', 'ejs');
+app.set('views', join(__dirname, '../client/views'));
+
 app.use(express.json())
-app.use(express.static('public'))
+app.use(express.static(join(__dirname, '../client/public')));
 app.use(express.urlencoded({ extended: true }))
 
-
-app.get('/', (req, res) => {
-    res.render('index', { title: 'Home'})
-})
-
-app.get('/scores', async (req, res) => {
-    if (req.query.order === 'score-desc') {
-        const { data: scores, error } = await supabase.from('Score tracker').select('*').order('score', { ascending: false})
-        res.render('scores', { scores, title: 'Scores ', order: req.query.order || 'default'})
-    }else if (req.query.order === 'score-asc') {
-        const { data: scores, error } = await supabase.from('Score tracker').select('*').order('score', { ascending: true})
-        res.render('scores', { scores, title: 'Scores ', order: req.query.order || 'default'})
-    }else if (req.query.order === 'date-desc') {
-        const { data: scores, error } = await supabase.from('Score tracker').select('*').order('date', { ascending: false})
-        res.render('scores', { scores, title: 'Scores ', order: req.query.order || 'default'})
-    }else if (req.query.order === 'date-asc') {
-        const { data: scores, error } = await supabase.from('Score tracker').select('*').order('date', { ascending: true})
-        res.render('scores', { scores, title: 'Scores ', order: req.query.order || 'default'})
-    }else {
-        const { data: scores, error } = await supabase.from('Score tracker').select('*').order('id', { ascending: true })
-        res.render('scores', { scores, title: 'Scores', order: req.query.order || 'default'})
-    }
-    
-})
-
-app.get('/score-input', (req, res) => {
-    res.render('input', { title: 'Input' })
-})
-
-app.post('/scores', async (req, res) => {
-    const { data, error } = await supabase.from('Score tracker').insert(req.body)
-
-    res.redirect('/scores')
-})
-
-
-app.post('/scores/:id/delete', async (req, res) => {
-    const id = parseInt(req.params.id)
-    const { error } = await supabase.from('Score tracker').delete().eq('id', id)
-
-
-    res.redirect('/scores')
-})
-
-app.post('/scores/:id/edit', async (req, res) => {
-    const id = parseInt(req.params.id)
-    const { error } = await supabase.from('Score tracker').update(req.body).eq('id', id)
-   
-    res.status(200).json({ message: 'success'})
-})
-app.use((req, res) => {
-    res.status(404).render('404', { title: '404'})
-})
+export default app;

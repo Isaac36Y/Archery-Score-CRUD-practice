@@ -50,6 +50,3 @@ app.post('/scores/:id/edit', async (req, res) => {
    
     res.status(200).json({ message: 'success'})
 })
-app.use((req, res) => {
-    res.status(404).render('404', { title: '404'})
-})

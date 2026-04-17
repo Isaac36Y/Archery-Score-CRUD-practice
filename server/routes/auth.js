@@ -1,10 +1,24 @@
 import app from '../app.js'
-import { supabase } from '@supabase/supabase-js'
+import { supabase } from '../app.js'
 
 app.get('/login', (req, res) => {
-    res.render('/login', { title: "Login"})
+    res.render('login', { title: "Login"})
 })
 
 app.get('/signup', (req, res) => {
-    res.render('/signup', { title: "SignUp"})
+    res.render('signup', { title: "SignUp"})
+})
+
+app.post('/signup', async (req, res) => {
+    const { data, error } = await supabase.auth.signUp({
+        email: req.body.email,
+        password: req.body.password,
+        options: {
+            data: {
+                first_name: req.body.name
+            }
+        },
+    })
+    res.redirect('/')
+    console.log(error)
 })

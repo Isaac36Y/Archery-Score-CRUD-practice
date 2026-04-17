@@ -1,11 +1,13 @@
 import app from '../app.js'
 import { supabase } from '../app.js'
+import { requireAuth } from '../middleware/auth.js'
 
-app.get('/', (req, res) => {
+app.get('/', requireAuth, (req, res) => {
+
     res.render('index', { title: 'Home'})
 })
 
-app.get('/scores', async (req, res) => {
+app.get('/scores', requireAuth, async (req, res) => {
     if (req.query.order === 'score-desc') {
         const { data: scores, error } = await supabase.from('Score tracker').select('*').order('score', { ascending: false})
         res.render('scores', { scores, title: 'Scores ', order: req.query.order || 'default'})
@@ -25,7 +27,7 @@ app.get('/scores', async (req, res) => {
     
 })
 
-app.get('/score-input', (req, res) => {
+app.get('/score-input', requireAuth, (req, res) => {
     res.render('input', { title: 'Input' })
 })
 

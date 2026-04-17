@@ -18,4 +18,12 @@ app.use(express.json())
 app.use(express.static(join(__dirname, '../client/public')));
 app.use(express.urlencoded({ extended: true }))
 
+const requireAuth = async (req, res, next) => {
+    const { data, error } = await supabase.auth.getSession()
+    if (error) {
+        res.redirect('/login')
+    }
+    next()
+}
+
 export default app;

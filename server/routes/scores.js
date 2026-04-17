@@ -3,7 +3,7 @@ import { supabase } from '../app.js'
 import { requireAuth } from '../middleware/auth.js'
 
 app.get('/', requireAuth, (req, res) => {
-
+    console.log(req.cookies)
     res.render('index', { title: 'Home'})
 })
 
@@ -28,7 +28,9 @@ app.get('/scores', requireAuth, async (req, res) => {
 })
 
 app.get('/score-input', requireAuth, (req, res) => {
+    console.log(req.cookies)
     res.render('input', { title: 'Input' })
+
 })
 
 app.post('/scores', async (req, res) => {

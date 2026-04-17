@@ -2,7 +2,6 @@ import app from '../app.js'
 import { supabase } from '../app.js'
 
 app.get('/login', (req, res) => {
-    console.log(req.cookies)
     res.render('login', { title: "Login"})
 })
 
